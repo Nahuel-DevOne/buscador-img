@@ -13,7 +13,7 @@ El proyecto es un buscador de imágenes con paginación, que utiliza la API de P
 
 - [![App](https://img.shields.io/badge/App-informational?style=for-the-badge&logo=netlify&logoColor=fff&color=23272d)](https://...)
 
-- No tiene incorporada ninguna base de datos
+- Utiliza la API de Pixabay
 
 ## *Desarrollado con:*
 
@@ -25,16 +25,16 @@ El proyecto es un buscador de imágenes con paginación, que utiliza la API de P
 
 ## **Screenshots:**
 
-### 1. Home:
-## ![](public/images/flujo-compra/home.png)
+### 1. Inicio:
+## ![](img/img-home.png)
 
-### 2. Detalle del producto seleccionado:
+### 2. Llamado a la API:
 
-## ![](public/images/flujo-compra/detalle-producto.png)
+## ![](img/img-llamado-api.png)
 
-### 3. Carrito de compras, con productos seleccionados:
+### 3. Paginación:
 
-## ![](public/images/flujo-compra/carrito-compra.png)
+## ![](img/img-paginacion.png)
 
 
   <!-- Hecho con amor -->
