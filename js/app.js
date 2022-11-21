@@ -1,8 +1,13 @@
+// Selectores
 const resultado = document.querySelector('#resultado');
 const formulario = document.querySelector('#formulario');
-
+const paginacionDiv = document.querySelector('#paginacion');
+// Variables globales
 const registrosPorPagina = 40;
 let totalPaginas;
+let iterador;
+let paginaActual = 1;
+
 // const paginacionDiv = document.querySelector('#paginacion');
 
 // window.onload = () => {
@@ -23,7 +28,7 @@ function validarFormulario(e) {
         return;
     }
 
-    buscarImagenes(terminoBusqueda);
+    buscarImagenes();
 }
 
 function mostrarAlerta(mensaje) {
@@ -48,28 +53,36 @@ function mostrarAlerta(mensaje) {
     }
 }
 
-function buscarImagenes(termino) {
+function buscarImagenes() {
+    const termino = document.querySelector('#termino').value;
+
     const key = '31491259-efefdf130de442d5041c19252';
-    const url = `https://pixabay.com/api/?key=${key}&q=${termino}&per_page=${registrosPorPagina}`;
+    const url = `https://pixabay.com/api/?key=${key}&q=${termino}&per_page=${registrosPorPagina}&page=${paginaActual}`;
     // console.log(url);
     fetch(url)
         .then(respuesta => respuesta.json())
         .then(resultado => {
             totalPaginas = calcularPaginas(resultado.totalHits);
-            console.log(totalPaginas);
+            // console.log(totalPaginas);
             mostrarImagenes(resultado.hits);
         })
 }
 
-// paginación
+// Paginación
 function calcularPaginas(total) {
     return parseInt(Math.ceil(total / registrosPorPagina));
 }
 
-
+// Generador que va a registrar la cantidad de elementos de acuerdo a las páginas
+function *crearPaginador(total){
+    for(let i = 1; i <= total; i++){
+        // console.log(i);
+        yield i;
+    }
+}
 
 function mostrarImagenes(imagenes) {
-    console.log(imagenes);
+    // console.log(imagenes);
     while(resultado.firstChild){
         resultado.removeChild(resultado.firstChild);
     }
@@ -95,6 +108,39 @@ function mostrarImagenes(imagenes) {
             </div>
         `;
     });
+
+    // Limpiar el paginador previo
+    while(paginacionDiv.firstChild) {
+        paginacionDiv.removeChild(paginacionDiv.firstChild);
+    }
+    // Generar el nuevo HTML
+    ImprimirPaginador();
 }
 
 
+function ImprimirPaginador() {
+    
+    iterador = crearPaginador(totalPaginas);
+    // console.log(iterador.next());
+    // console.log(iterador.next().value);
+    // console.log(iterador.next().done);
+    while(true) {
+        const { value, done } = iterador.next();
+        if(done) return;
+        // Caso contrario, genera un botón por cada elemento en el generador
+        const boton = document.createElement('A');
+        boton.href = '#';
+        boton.dataset.pagina = value;
+        boton.textContent = value;
+        boton.classList.add('siguiente', 'bg-yellow-400', 'px-4', 'py-1', 'mr-1', 'ml-1', 'font-bold', 'mb-10', 'rounded');
+
+        boton.onclick = () => {
+            paginaActual = value;
+            console.log(paginaActual);
+            buscarImagenes();
+        }
+
+        paginacionDiv.appendChild(boton);
+    }
+
+}
